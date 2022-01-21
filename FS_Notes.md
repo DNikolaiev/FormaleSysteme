@@ -139,7 +139,11 @@ Quotientenautomat M/∼ gegeben durch M/∼ = (Q/∼, Σ, δ∼, [q0]∼M , F/�
   - (1) Aus q1 ∈ F und q2 < F folgt immer q1 / q2.
   - (2) Wenn δ(q1, a) / δ(q2, a), dann q1 / q2.
 
-Sei M ein DFA mit totaler Übergangsfunktion. Der reduzierte Automat Mr ergibt sich durch folgende Schritte (minimalen DFA):
+- Zwei Zustände p, q ∈ Q sind M-äquivalent, in Symbolen p ∼M q,wenn gilt:
+  - L(Mp) = L(Mq) das heißt wenn für jedes Wort w ∈ Σ∗ gilt:
+  - δ(p, w) ∈ F genau dann wenn δ(q, w) ∈ F.
+
+Sei M ein DFA mit totaler Übergangsfunktion. Der **reduzierte** Automat Mr ergibt sich durch folgende Schritte (minimalen DFA):
 - (1) Entferne alle unerreichbaren Zustände aus M.
 - (2) Berechne den Quotientenautomaten.
 
@@ -147,12 +151,12 @@ Sei M ein DFA mit totaler Übergangsfunktion. Der reduzierte Automat Mr ergibt s
 
 Für eine Sprache L ⊆ Σ∗ ist die Nerode-Rechtskongruenz 'L wie folgt definiert:
 
-    Für Wörter u, v ∈ Σ∗ sei u 'L v genau dann, wenn gilt:
+    Für Wörter u, v ∈ Σ∗ sei u ~ v genau dann, wenn gilt:
     Für alle w ∈ Σ∗ gilt: uw ∈ L genau dann, wenn vw ∈ L
 
 Definition (kurz): u ~ v gdw. für alle w ∈ Σ∗ gilt: uw ∈ L gdw. vw ∈ L.
 
-**Satz (Myhill & Nerode)**: Eine Sprache L ist genau dann regulär, wenn 'L endlich viele Äquivalenzklassen hat.
+**Satz (Myhill & Nerode)**: Eine Sprache L ist genau dann regulär, wenn L endlich viele Äquivalenzklassen hat.
 
 **Satz**: M( Myhill-Nerode-Minimalautomat) hat unter allen totalen DFAs, die L erkennen, eine minimale Anzahl an Zuständen.
 
@@ -171,6 +175,213 @@ Zwei Automaten sind isomorph, wenn es einen Isomorphismus zwischen ihnen gibt.
   - Bestimme die reduzierten Automaten
   -  Teste, ob die reduzierten Automaten isomorph sind (z.B. naiv durch
 systematisches Durchprobieren aller Bijektionen)
+
+## <center> Pumping Lemma, Abschlusseigenschaften
+
+**Satz**: Wenn L1 und L2 regulär sind, dann auch L1 ∩ L2, L1 ∪ L2, L∗1 und !L1.
+- **Satz**: Wenn L1 regulär und L1 ∩ L2 nicht regulär ist, dann ist L2 ebenfalls nicht regulär.
+- **Satz (Pumping-Lemma)**: Für jede reguläre Sprache L
+gibt es eine Zahl n ≥ 0, so dass gilt:
+für jedes Wort z ∈ L mit |z| ≥ n
+gibt es eine Zerlegung z = uvw mit |v| ≥ 1 und |uv| ≤ n, so dass:
+für jede Zahl k ≥ 0 gilt: uv^(k)w ∈ L
+- Für endliche Sprachen ist die Eigenschaft trivial. Man wählt n einfach so
+groß, dass es keine Wörter z mit |z| ≥ n gibt, für welche weitere Eigenschaften gefordert werden.
+
+---
+- Fur eine Sprache gibt es unterschiedliche Grammatiken, die haben unterschiedliche Ableitungsbäume. 
+
+- Kettenregeln - nicht gunstig. Variable durch eine andere ersetzen. Führt nicht zu einer Verbreitung des Baumes, man verlängert nur die Ableitung und macht Pfade im Baum schmaller, wo jedes Knoten genau 1 Kindknoten hat.
+
+- In CNF keine Kettenregeln gibt, bei Ableitung immer etwas herausbekommen
+
+### Abschluss kontextfreie Sprachen
+- Vereiningung +
+- Konkatenation +
+- Stern +
+- Schnitt -
+- Komplement -
+- 
+Wenn G kontextfrei ist, dann ist G* kontextfrei<br>
+Wenn G1 G2 kontextfrei sind, dann G1 oder G2 kontextfrei ist
+Wenn L1 und L2 kontextfrei sind, dann L1 und L2 nicht immer kontextfrei
+
+---
+**Satz (Pumping-Lemma)**:
+Für jede kontextfreie Sprache L gibt es eine Zahl n ≥ 0, so dass gilt:
+- für jedes Wort z ∈ L mit |z| ≥ n
+- gibt es eine Zerlegung z = uvwxy mit |vx| ≥ 1 und |vwx| ≤ n, so dass:
+- für jede Zahl k ≥ 0 gilt: **uv^(k)wx^(k)y ∈ L**.
+
+---
+
+## <center> Kellerautomat
+
+- Ein Kellerautomat (international: „PDA“, „Pushdown Automaton“) M ist ein Tupel M = (Q, Σ, Γ, δ, Q0, F) mit den folgenden Bestandteilen:
+  - Q: endliche Menge von Zuständen
+  - Σ: Eingabealphabet
+  - Γ: Kelleralphabet
+  - δ: Übergangsfunktion, eine totale Funktion Q × Σe × Γe → 2^Q×Γe, wobei 2^Q×Γe die Potenzmenge von Q × Γe ist.
+  - Q0: Menge möglicher Startzustände Q0 ⊆ Q
+  - F: Menge von Endzuständen F ⊆ Q
+
+- Die von M akzeptierte Sprache L(M) ist die Menge aller von M akzeptierten Wörter
+- **Satz**: Eine Sprache ist genau dann kontextfrei, wenn sie von einem PDA akzeptiert wird
+- **Fakt**: Vq,r erzeugt ein Wort w genau dann, wenn P von q mit leerem Keller zu r mit
+leerem Keller gelangen kann.
+
+---
+## <center> Determenistisch Kontextfreie Sprachen
+- Ein deterministischer Kellerautomat (international: „DPDA“) M ist ein Tupel M = (Q, Σ, Γ, δ, q0, F) mit den folgenden Bestandteilen:
+  - Q: endliche Menge von Zuständen
+  - Σ: Eingabealphabet
+  - Γ: Kelleralphabet
+  - δ: Übergangsfunktion, eine partielle Funktion Q × Σ × Γ → Q × Γ,
+    - so dass für alle q ∈ Q, a ∈ Σ und A ∈ Γ
+    - jeweils nur eines der folgenden definiert ist:
+  δ(q, a, A) δ(q, a,e) δ(q,e, A) δ(q,e,e)
+  - q0: ein Startzustand q0 ∈ Q
+  - F: Menge von Endzuständen F ⊆ Q
+
+Es gibt verschiedene Quellen für Nichtdeterminismus bei PDAs:
+- Die Übergangsfunktion liefert eine Menge möglicher Übergänge.
+- Es gibt mehrere mögliche Startzustände.
+- Es gibt e-Übergänge im Bezug auf Eingabe und Keller.
+---
+
+
+- Eine Sprache ist genau dann deterministisch kontextfrei, wenn sie durch einen deterministischen Kellerautomaten akzeptiert wird.
+- Satz: Die deterministisch kontextfreien Sprachen bilden eine echte Untermenge der kontextfreien Sprachen.
+- Satz: Die Klasse der deterministisch kontextfreien Sprachen ist unter Komplement abgeschlossen
+- Eine Grammatik G ist genau dann **mehrdeutig**, wenn es ein Wort w ∈ L(G) gibt, das mehrere Syntaxbäume zulässt (äquivalent: wenn es für w mehrere unterschiedliche Linksableitungen gibt).
+- *Deterministische Sprachen haben immer auch eindeutige Grammatiken*.
+(Allerdings womöglich nicht ausschließlich solche.)
+  - Aber: Eindeutige Grammatiken können nichtdeterministische Typ-2-Sprachen
+beschreiben
+  - deterministisch <= eindeutig <= Typ 2
+
+-  DPDAs erkennen im Prinzip dieselben Sprachen wie DCFGs
+-  **Satz**: Deterministische Typ-2-Sprachen sind *nicht* unter Schnitt abgeschlossen.
+-  **Satz**: Deterministische Typ-2-Sprachen sind *nicht* unter Vereinigung abgeschlossen.
+   -  Beweis: Angenommen, sie wären unter Vereinigung abgeschlossen, dann wären sie
+  (mittels der Regeln von De Morgan) auch unter Schnitt abgeschlossen, da sie bereits
+  unter Komplement abgeschlossen sind. Widerspruch
+-  **Lemma**: Ist L1 deterministisch kontextfrei und L2 regulär, so ist L1 ∩ L2 deterministisch kontextfrei
+- **Satz**: Deterministische Typ-2-Sprachen sind *nicht* unter Konkatenation abgeschlossen
+- **Satz:** Deterministische Typ-2-Sprachen sind *nicht* unter Kleene-Stern abgeschlossen.
+- Zusammenfassung: Deterministische Typ-2-Sprachen sind abgeschlossen unter
+Komplement, aber nicht unter Vereinigung, Schnitt, Konkatenation oder Kleene-Stern.
+---
+## <center> Entscheidbarkeit und TM
+![Entscheidbarkeit](3.png)
+- Die Haupteinschränkung von Kellerautomaten war das eingeschränkte Speichermodell
+---
+TMs haben eine endliche Steuerung (wie bei NFA und PDA).
+- Es gibt eine unbeschränkte Menge an Speicher (wie bei PDA).
+- Die TM kann in jedem Schritt ein Zeichen aus dem Speicher lesen und eines
+schreiben (wie bei PDA).
+- Der Lese-/Schreibzugriff ist an jeder beliebigen Speicheradresse möglich
+(im Gegensatz zu PDA).
+Zur praktischen Implementierung speichert die TM die aktuelle Adresse und kann
+diese in jedem Schritt um eins erhöhen oder verringern.
+- Zur Vereinfachung wird die Eingabe einfach beim Start in den Speicher übergeben,
+so dass „Lesen der Eingabe“ und „Lesen des Speichers“ die selbe Operation sind.
+- Am linken Rand kann der Kopf nicht weiter nach links bewegt werden.
+- Am rechten Rand des Speichers kann der Kopf nach rechts bewegt werden: Dann
+wird dort eine neue Speicherzelle mit dem Inhalt __ (Leerzeichen, Blank) angefügt.
+
+
+Eine **(deterministische) Turingmaschine (DTM)** ist ein Tupel M = (Q, Σ, Γ, δ, q0, F) mit
+den folgenden Bestandteilen:
+- Q: endliche Menge von Zuständen
+- Σ: Eingabealphabet
+- Γ: Arbeitsalphabet mit Γ ⊇ Σ ∪ {__}
+- δ: Übergangsfunktion, eine partielle Funktion
+Q × Γ → Q × Γ × {L, R, N}
+- q0: Startzustand q0 ∈ Q
+- F: Menge von akzeptierenden Endzuständen F ⊆ Q
+  - Dabei bedeutet δ(q, a) = hp, b, Di:
+„Liest die TM in Zustand q unter dem Lese-/Schreibkopf ein a,
+dann wechselt sie zu Zustand p, überschreibt das a mit b
+und verschiebt den Lese-/Schreibkopf gemäß D ∈ {L, R, N}
+(nach links, nach rechts, gar nicht).“
+---
+- Ein Lauf ist eine maximale Folge von Konfigurationen, die durch die Übergangsrelation
+in Beziehung stehen.
+- Ein Lauf kann endlich sein, wenn es für die Schlusskonfiguration keinen
+Nachfolger gibt.
+- Ein Lauf kann unendlich sein, wenn immer neue Konfigurationen erreichbar sind.
+- Die TM akzeptiert die Eingabe, wenn der (eindeutig bestimmte) Lauf, der mit q0 w
+beginnt, endlich ist und seine letzte Konfiguration einen Endzustand beinhaltet.
+- Andernfalls verwirft die TM die Eingabe.
+- Es gibt zwei Gründe für die Nichtakzeptanz von Wörtern:
+   - (1) Die TM hält in einem Zustand, der kein Endzustand ist.
+   - (2) Die TM hält nicht (Endlosschleife).
+
+
+**Die von einer TM M erkannte Sprache L(M) ist die Menge aller Wörter, die von M akzeptiert werden.**<br></br>
+**Eine TM ist ein Entscheider, wenn sie bei jeder Eingabe hält. Wir sagen in diesem Fall, dass die TM die von ihr erkannte Sprache entscheidet**
+
+- Church-Turing-These: Eine Funktion ist genau dann im intuitiven Sinne berechenbar,
+wenn es eine Turingmaschine gibt, die für jede mögliche Eingabe den Wert der Funktion auf das Band schreibt und anschließend hält
+- Ein DFA kann als DTM aufgefasst werden, welche die Eingabe auf dem Band nur in einer Richtung liest und niemals beschreibt.
+- Ein deterministischer PDA kann leicht durch eine 2-Band-TM simuliert werden. Dabei wird vom ersten Band nur gelesen, während auf dem zweiten Band der
+aktuelle Kellerinhalt gespeichert wird.
+- Satz: Für jedes k ≥ 1 können k-Band-TM durch (1-Band-)TM simuliert werden.
+
+## <center> Nichtdeterministiche TM (NTM)
+
+- Die nichtdeterministische Turingmaschine (NTM)
+  - modelliert die Übergangsfunktion als totale Funktion δ : Q × Γ → 2^(Q×Γ×{L,R,N}),
+  - wobei 2^(Q×Γ×{L,R,N}) die Potenzmenge von Q × Γ × {L, R, N} ist;
+  - kann weiterhin mit einem einzigen Anfangszustand arbeiten.
+- Läufe werden wie bei DTMs definiert, aber jetzt kann es pro Eingabe viele Läufe geben.
+- Die Eingabe wird genau dann akzeptiert, wenn mindestens ein Lauf endlich ist und in
+einer akzeptierenden Konfiguration endet.
+- **Satz**: Jede NTM kann von einer DTM simuliert werden
+- **Satz**: Jede Sprache die von einer NTM entschieden wird, kann auch von einer DTM entschieden werden.
+  
+## <center> Entscheidbarkeit
+
+Eine Sprache L heißt genau dann **entscheidbar (berechenbar, rekursiv)**, wenn
+- es eine TM M gibt, die ihr Wortproblem entscheidet, d.h. M ist Entscheider und L = L(M).
+- Andernfalls heißt L unentscheidbar.
+  
+L heißt genau dann **semi-entscheidbar** (Turing-erkennbar, rekursiv aufzählbar), wenn es eine TM M mit L = L(M) gibt (auch wenn M kein Entscheider ist).
+
+**Satz**: Es gibt abzählbar viele Turingmaschinen (Computerprogramme, Algorithmen)
+aber überabzählbar viele Sprachen. Also sind die meisten Sprachen unentscheidbar.
+
+Das Halteproblem besteht in der folgenden Frage:
+Gegeben eine TM M und ein Wort w, wird M für die Eingabe w jemals anhalten?
+  - Das Halteproblem ist das Wortproblem für die Sprache
+{enc(M)##enc(w) | M hält bei Eingabe w}.
+
+
+**Satz**: Das Halteproblem ist unentscheidbar.
+
+**Satz**: Das Halteproblem ist semi-entscheidbar.
+
+**Satz**: Das Komplement des Halteproblems ist nicht Turing-erkennbar (nicht entscheidbar).
+
+Ein Formalismus ist Turing-mächtig, wenn er das Ein-/Ausgabe-Verhalten jeder TuringMaschine simulieren kann (äquivalent: wenn er eine UTM kodieren kann).
+
+---
+
+### Universelle TM
+- **Satz**: Es gibt eine Turingmaschine U, die für Eingaben der Form enc(M)##enc(w)
+das Verhalten von M auf w simuliert:
+  - Falls M auf w hält, dann hält U auf enc(M)##enc(w) mit dem gleichen Ergebnis
+  - Falls M auf w nicht hält, dann hält U auf enc(M)##enc(w) ebenfalls nicht
+
+
+
+
+
+
+
+
+
 
 
 
