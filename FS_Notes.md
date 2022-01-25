@@ -194,14 +194,14 @@ groß, dass es keine Wörter z mit |z| ≥ n gibt, für welche weitere Eigenscha
 - Kettenregeln - nicht gunstig. Variable durch eine andere ersetzen. Führt nicht zu einer Verbreitung des Baumes, man verlängert nur die Ableitung und macht Pfade im Baum schmaller, wo jedes Knoten genau 1 Kindknoten hat.
 
 - In CNF keine Kettenregeln gibt, bei Ableitung immer etwas herausbekommen
-
+- CNF: A->AB oder A->a
 ### Abschluss kontextfreie Sprachen
 - Vereiningung +
 - Konkatenation +
 - Stern +
 - Schnitt -
 - Komplement -
-- 
+  
 Wenn G kontextfrei ist, dann ist G* kontextfrei<br>
 Wenn G1 G2 kontextfrei sind, dann G1 oder G2 kontextfrei ist
 Wenn L1 und L2 kontextfrei sind, dann L1 und L2 nicht immer kontextfrei
@@ -373,6 +373,283 @@ Ein Formalismus ist Turing-mächtig, wenn er das Ein-/Ausgabe-Verhalten jeder Tu
 das Verhalten von M auf w simuliert:
   - Falls M auf w hält, dann hält U auf enc(M)##enc(w) mit dem gleichen Ergebnis
   - Falls M auf w nicht hält, dann hält U auf enc(M)##enc(w) ebenfalls nicht
+  
+- **Satz von Rice** (formell): Sei E eine Eigenschaft von Sprachen, die für manche
+Turing-erkennbare Sprachen gilt und für manche Turing-erkennbare Sprachen nicht gilt (eine „nichttriviale Eigenschaft“). Dann ist das folgende Problem unentscheidbar:
+- Eingabe: Turingmaschine M
+- Ausgabe: Hat L(M) die Eigenschaft E?
+---
+- **Satz**: Die Typ-0-Grammatiken erzeugen genau diejenigen Sprachen, die von einer Turingmaschine erkannt werden können.
+  - Typ-0-Grammatiken sind ein universelles (Turing-mächtiges) Berechnungsmodell.
+  - Typ-0-Sprachen sind die größte Klasse von Sprachen, die wir mit einem
+  „implementierbaren“ Formalismus beschreiben können.
+  - Die Typ-0-Sprachen sind genau die semi-entscheidbaren Sprachen.
+  - Das Wortproblem für Typ-0-Sprachen ist unentscheidbar.
+
+Ein **linear beschränkte Turingmaschine** (linear bounded automaton, LBA) ist eine nichtdeterministische Turingmaschine, die den Lese-/Schreibkopf nicht über das letzte Eingabezeichen hinaus bewegen kann. Versucht sie das, so bleibt der Kopf stattdessen an der letzten Bandstelle stehen.
+
+**Satz:** Die Typ-1-Grammatiken erzeugen genau diejenigen Sprachen, die von einem
+LBA erkannt werden können.
+
+**Satz**: Das Wortproblem für Typ-1-Sprachen ist entscheidbar.
+
+Beispiel: Das Halteproblem ist keine Typ-1-Sprache, da es nicht entscheidbar ist.
+
+## <center> Abschlusseigenschaften
+![Abschluss](4.png)
+
+---
+
+# <center> Logic
+
+![Teilformen](5.png)
+
+- Atome an sich bedeuten zunächst nichts; sie können einfach wahr oder falsch sein.
+- Je nachdem, welche Atome wahr sind und welche falsch, ergeben sich
+verschiedene „Interpretationen“, dargestellt durch Wertzuweisungen.
+(Funktionen von P nach {1, 0}; 1 entspricht „wahr“ und 0 entspricht „falsch“).
+- Die Wahrheit (oder Falschheit) einer Formel ergibt sich (ausschließlich!) aus den
+Wahrheitswerten der in ihr vorkommenden Atome.
+-> Wertzuweisungen machen Formeln wahr oder falsch.
+- Die Bedeutung einer Formel besteht darin, dass sie uns Informationen darüber liefert,
+welche Wertzuweisungen möglich sind, falls die Formel wahr sein soll
+---
+Eine Wertzuweisung w erfüllt genau dann eine Formel F, in Symbolen w |= F, wenn
+eine der folgenden induktiv definierten Bedingungen gilt:
+- F ∈ P mit w(F) = 1,
+- F = ¬G mit w not|= G,
+- F = (G1 ∧ G2) mit w |= G1 und w |= G2,
+- F = (G1 ∨ G2) mit w |= G1 oder w |= G2 (oder beides),
+- F = (G1 → G2) mit w 6|= G1 oder w |= G2,
+- F = (G1 ↔ G2) mit: w |= G1 genau dann, wenn w |= G2.
+
+<br>
+
+Eine Wertzuweisung w ist genau dann ein Modell einer Formel F, wenn w |= F (also
+wenn w(F) = 1) gilt. Ist F eine (möglicherweise unendliche) Menge von Formeln, dann
+ist w genau dann ein Modell der Menge F , wenn w |= F für alle F ∈ F gilt. In diesem
+Fall schreiben wir w |= F
+
+Sei F eine Menge von Formeln. Eine Formel G ist genau dann eine
+logische Konsequenz aus F , wenn jedes Modell von F auch ein Modell von G ist.
+In diesem Fall schreiben wir F |= G.
+
+- Die Formeln in F schränken die möglichen Interpretationen ein:
+Je mehr Formeln wahr sein sollen, desto weniger Freiheiten gibt es bei der Wahl
+der Modelle.
+- G ist genau dann eine logische Konsequenz von F , wenn gilt:
+Falls F wahr ist, dann ist auch G garantiert wahr.
+- Модель это какой-то набор значений, на котором все логические высказывания (формулы) дают 1
+
+Eine Formel F ist:
+- unerfüllbar (oder inkonsistent), wenn sie keine Modelle hat;
+- erfüllbar (oder konsistent), wenn sie mindestens ein Modell hat;
+- allgemeingültig (oder eine Tautologie), wenn alle Wertzuweisungen Modelle für die Formel sind;
+- widerlegbar, wenn sie nicht allgemeingültig ist
+
+
+Satz:
+- (1) Eine allgemeingültige Formel ist logische Konsequenz jeder anderen
+Formel(menge).
+- (2) Eine unerfüllbare Formel(menge) hat jede andere Formel als logische
+Konsequenz.
+---
+
+Zwei Formeln F und G sind genau dann semantisch **äquivalent**, in Symbolen F ≡ G,
+wenn sie genau dieselben Modelle haben, d.h. gdw.
+für alle Wertzuweisungen w gilt: w(F) = w(G)
+
+**Satz:**
+- Alle Tautologien sind semantisch äquivalent.
+- Alle unerfüllbaren Formeln sind semantisch äquivalent.
+
+**Satz:** Semantische Äquivalenz entspricht wechselseitiger logischer Konsequenz:
+- F ≡ G genau dann, wenn F |= G und G |= F.
+
+**Satz (Ersetzungstheorem):** Sei F eine Formel mit einer Teilformel G. Wenn G ≡ G0 gilt und F0 aus F gebildet werden kann, indem man ein beliebiges Vorkommen von G in F durch G0 ersetzt, dann gilt auch F ≡ F0.
+
+Satz: Sei F eine beliebige aussagenlogische Formel.
+- Es gibt eine zu F äquivalente Formel, die nur die Junktoren ∧ und ¬ enthält.
+- Es gibt eine zu F äquivalente Formel, die nur die Junktoren ∨ und ¬ enthält.
+
+**Satz (Deduktionstheorem)**: Für jede Formelmenge F und Formeln G und H gilt
+- F |= G → H genau dann, wenn F ∪ {G} |= H
+- Allgemein (F ∧ G) → H ≡ F → (G → H)
+  
+Wir schreiben |= F statt ∅ |= F um auszudrücken, dass F allgemeingültig ist
+
+**Satz**: F ≡ G genau dann, wenn |= F ↔ G.
+
+---
+## <center> Normalformen
+
+**Literal** Atom oder negiertes Atom p oder ¬p
+
+Eine Formel F ist genau dann in **Negationsnormalform (NNF)** wenn
+- (a) sie nur die Junktoren ∧, ∨ und ¬ enthält und
+- (b) der Junktor ¬ nur direkt vor Atomen vorkommt (d.h. nur in Teilformeln der Form
+¬p mit p ∈ P).
+
+Satz: Jede Formel kann (in linearer Zeit) in eine äquivalente Formel in NNF umgewandelt werden
+
+Eine Formel F ist in **konjunktiver Normalform (KNF)** wenn sie eine 
+- Konjunktion von Disjunktionen von Literalen ist, d.h. wenn sie die Form hat:
+- (L1,1 ∨ . . . ∨ L1,m1) ∧ (L2,1 ∨ . . . ∨ L2,m2) ∧ . . . ∧ (Ln,1 ∨ . . . ∨ Ln,mn)
+- wobei die Formeln Li,j Literale sind. Eine Disjunktion von Literalen heißt *Klausel*
+
+Eine Formel F ist in **disjunktiver Normalform (DNF)** wenn sie eine 
+- Disjunktion von Konjunktionen von Literalen ist, d.h. wenn sie die Form hat:
+- (L1,1 ∧ . . . ∧ L1,m1) ∨ (L2,1 ∧ . . . ∧ L2,m2) ∨ . . . ∨ (Ln,1 ∧ . . . ∧ Ln,mn)
+- wobei die Formeln Li,j Literale sind. Eine Konjunktion von Literalen heißt *Monom*.
+
+Satz: Eine Formel in DNF ist genau dann erfüllbar, wenn eines ihrer Monome erfüllbar
+ist. Dies ist genau dann der Fall, wenn das Monom kein Atom gleichzeitig negiert und
+nichtnegiert enthält.
+- Nachteil: Die DNF kann ebenfalls exponentiell groß werden (muss sie aber nicht in
+jedem Fall)
+
+Satz: Eine Formel in KNF ist genau dann widerlegbar, wenn eine ihrer Klauseln widerlegbar ist. Dies ist genau dann der Fall, wenn die Klausel kein Atom gleichzeitig
+negiert und nichtnegiert enthält.
+
+
+## <center> Resolution
+
+Gegeben seien zwei Klauseln K1 und K2, für die es ein Atom p ∈ P gibt, sodass
+- p ∈ K1 und ¬p ∈ K2. Die Resolvente von K1 und K2 bezüglich p ist die Klausel (K1 \ {p}) ∪ (K2 \ {¬p}).
+- Eine Klausel R ist eine Resolvente einer Klauselmenge K wenn R Resolvente zweier
+Klauseln K1, K2 ∈ K ist.
+
+Satz: Wenn R Resolvente der Klauseln K1 und K2 ist, dann gilt {K1, K2} |= R.
+- Wenn eine der Klauseln ⊥ ist, dann ist die gesamte Formel unerfüllbar.
+  
+Bezüglich der algorithmischen Komplexität ist Resolution schlimmstenfalls nicht besser als andere Verfahren
+
+## <center> Horn Logic
+
+- Eine Horn-Klausela
+ist eine Klausel, die höchstens ein nichtnegiertes Literal enthält.
+- Eine Horn-Formel ist eine Formel in KNF, welche nur Horn-Klauseln enthält.
+- Als Implikationen geschriebene Horn-Klauseln werden oft als (Horn-)Regeln bezeichnet.
+- Satz: Das Resolutionskalkül für Horn-Formeln bleibt auch dann vollständig, wenn man sich auf Resolventen beschränkt, bei denen eine Klausel die Form {p} (also true → p) hat.
+- Satz (Dowling & Gallier): Die Erfüllbarkeit einer Horn-Formel kann in linearer Zeit entschieden werden.
+
+## <center> Komplexitätstheorie
+
+### SAT = {enc(F) | F ist erfüllbar} ist entscheidbar Typ-1
+SAT ist nicht kontextfrei.
+
+### Big O notation
+- Für Funktionen f , g : N → R schreiben wir f ∈ O(g) genau dann, wenn gilt:
+Es gibt eine Zahl c > 0 und eine Zahl n0 ∈ N,
+so dass für jedes n > n0 gilt: f(n) ≤ c · g(n)
+**Das bedeutet: f wächst höchstens so schnell wie g.**
+
+- DTM M heißt genau dann **O( f)-zeitbeschränkt**, wenn es eine Funktion g ∈ O( f) gibt,
+sodass für alle w ∈ Σ∗ gilt: 
+  - M hält auf Eingabe w (für NTM auf jedem Berechnungspfad) nach maximal g(|w|) Schritten.
+- M heißt genau dann **O( f)-speicherbeschränkt**, wenn es eine Funktion g ∈ O( f)
+gibt, sodass für alle w ∈ Σ∗ gilt:
+  - M hält auf Eingabe w (für NTM auf jedem Berechnungspfad) und verwendet dabei maximal g(|w|) Speicherzellen
+
+- Ein LBA entspricht einer O(n)-speicherbeschränkten TM.∗
+- Der naive Erfüllbarkeitstest für SAT ist O(2n)-zeitbeschränkt.
+
+- DTIME( f(n)) ist die Klasse aller Sprachen L, welche durch eine
+O( f)-zeitbeschränkte Turingmaschine entschieden werden können.
+- DSPACE( f(n)) ist die Klasse aller Sprachen L, welche durch eine
+O( f)-speicherbeschränkte Turingmaschine entschieden werden können.
+
+Unentscheidbare Probleme benötigen uneingeschränkten Zugang zu beliebig vielen Ressourcen einer TM.
+
+Jede O( f(n))-zeitbeschränkte k-Band-TM kann durch eine O(k· f^2(n))-zeitbeschränkte 1-Band-TM simuliert werden (wie in Vorlesung 18 gezeigt).
+Einfacher gesagt: **Der Verzicht auf mehrere Bänder verursacht maximal quadratische Zeitkosten (k ist hier ein linearer Faktor)**
+
+Man definiert **O(log(n))-speicherbeschränkte Turingmaschinen** als besondere
+Mehrband-TMs:
+- Das erste Band ist das Eingabeband. Es enthält die Eingabe und darf nur
+gelesen, aber nicht beschrieben werden.
+- Das zweite Band ist das Arbeitsband. Es darf beliebig gelesen und beschrieben
+werden, aber es ist auf O(log(n)) viele Speicherzellen beschränkt.
+---
+### Fakt: Es gilt LogSpace ⊆ P ⊆ PSpace ⊆ Exp.
+
+### L ⊆ NL ⊆ P ⊆ NP ⊆ PSpace = NPSpace ⊆ Exp ⊆ NExp
+---
+In n Berechnungsschritten kann eine TM nur n Speicherzellen nutzen
+
+Alle möglichen Konfigurationen auf n Speicherzellen kann man in exponentieller
+Zeit (bezüglich n) berechnen
+
+Das Wortproblem jeder regulären Sprache ist in LogSpace. Tatsächlich benötigt ein DFA gar keinen Speicher.
+
+
+- NTIME( f(n)) ist die Klasse aller Sprachen L, welche durch eine
+O( f)-zeitbeschränkte NTM entschieden werden können.
+- NSPACE( f(n)) ist die Klasse aller Sprachen L, welche durch eine
+O( f)-speicherbeschränkte NTM entschieden werden können.
+
+
+Satz: SAT ∈ NP
+
+- Eine DTM kann als NTM aufgefasst werden, d.h. die nichtdeterministischen Klassen sind
+immer mindestens gleich stark
+- Man kann NTMs mit DTMs simulieren, aber das ist oft mit exponentiellen Mehrkosten
+verbunden 
+- Der berühmte **Satz von Savitch** besagt, dass speicherbeschränkte NTMs durch DTMs mit
+nur quadratischen Mehrkosten simuliert werden können. Insbesondere gilt damit **PSpace = NPSpace.**
+
+## <center> NP-vollständigkeit
+
+Ein **polynomieller Verifikator** für eine Sprache L ⊆ Σ∗
+ist eine polynomiellzeitbeschränkte, deterministische TM M, für die gilt:
+- M akzeptiert nur Wörter der Form w#z mit:
+  - w ∈ L,
+  - z ∈ Σ∗ ist ein Zertifikat polynomieller Länge
+(d.h. für M gibt es ein Polynom p mit |z| ≤ p(|w|)).
+- Für jedes Wort w ∈ L gibt es ein solches Wort w#z ∈ L(M).
+
+Das Zertifikat z kodiert die Lösung des Problems w, die der Verifikator lediglich
+nachprüft.
+
+- Eine Sprache L ist genau dann **nachweis-polynomiell**, wenn es für sie einen polynomiellen Verifikator gibt.
+  - Jede Sprache L ∈ P ist nachweis-polynomiell. Als Verifikator verwenden wir
+einfach einen polynomiell-zeitbeschränkten Entscheider für L. Das Zertifikat kann leer
+sein.
+
+Die **Faktorisierung** einer natürlichen Zahl n ist die Darstellung der Zahl als Produkt von
+natürlichen Zahlen k1 · k2 = n.
+
+**Satz**: Eine Sprache L ist genau dann nachweis-polynomiell, wenn L ∈ NP
+
+**Satz**: Die Klasse P ist unter Komplement abgeschlossen.
+
+Die Komplexitätsklasse **coNP** enthält alle diejenigen Sprachen L, für die L ∈ NP gilt.
+
+- Eine Funktion f : Σ∗ → Σ∗ ist genau dann **polynomiell berechenbar**, wenn es eine polynomiell zeitbeschränkte TM gibt, die bei einer Eingabe w die Ausgabe f(w) auf das
+Band schreibt und anschließend anhält
+
+- Eine polynomiell berechenbare Funktion f : Σ∗ → Σ∗
+ist genau dann eine **polynomielle Reduktion** von einer Sprache L auf eine Sprache G, wenn für alle Wörter w ∈ Σ∗ gilt:
+  - w ∈ L genau dann, wenn f(w) ∈ G
+
+**Satz von Cook [1971] & Levin [1973]**:
+Alle Probleme in NP können polynomiell auf SAT reduziert werden.
+
+---
+Eine Sprache ist
+- **NP-schwer**, wenn jede Sprache in NP polynomiell darauf reduzierbar ist;
+- **NP-vollständig**, wenn sie NP-schwer ist und in NP liegt
+  - Beispiel: Das Halteproblem ist NP-schwer, aber sicher nicht in NP. Gleiches gilt für
+jedes unentscheidbare Problem
+
+
+Satz: Wenn L NP-schwer ist und polynomiell auf G reduziert werden kann, dann ist G
+auch NP-schwer.
+
+
+
+
+
 
 
 
